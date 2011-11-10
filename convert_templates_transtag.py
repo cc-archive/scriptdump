@@ -47,9 +47,9 @@ def nicer_args(args):
 
 
 def generate_trans_block(match):
-    logical_msg = match.groups()[0]
+    logical_msg = match.groups()[0] or match.groups()[1]
     # args = [arg.strip().strip(',') for arg in match.groups()[1].strip().split(',')]
-    args = match.groups()[1].strip()
+    args = match.groups()[2].strip()
     english_msg = gettext(logical_msg)
     if args:
         #return "{% trans " + ", ".join(args) + " %}" + english_msg + "{% endtrans %}"
@@ -59,7 +59,7 @@ def generate_trans_block(match):
 
 def transform_template(template_text):
     regex = re.compile(
-        r'{{ cctrans\(locale, [\'"]?(.+?)[\'"],?(.*?)\)\|safe ?}}',
+        r'{{ cctrans\(locale, (?:\'(.+?)\'|"(.+?)"),?(.*?)\)\|safe ?}}',
         re.S)
     return regex.sub(generate_trans_block, template_text)
 
