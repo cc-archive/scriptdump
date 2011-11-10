@@ -51,6 +51,10 @@ def generate_trans_block(match):
     # args = [arg.strip().strip(',') for arg in match.groups()[1].strip().split(',')]
     args = match.groups()[2].strip()
     english_msg = gettext(logical_msg)
+
+    # Transform variable substitutions
+    english_msg = re.sub(r'%\((.+?)\)s', '{{ \\1 }}', english_msg)
+
     if args:
         #return "{% trans " + ", ".join(args) + " %}" + english_msg + "{% endtrans %}"
         return "{% trans " + nicer_args(args) + " %}" + english_msg + "{% endtrans %}"
