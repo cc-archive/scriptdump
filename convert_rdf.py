@@ -32,6 +32,7 @@ def main():
     filenames = sys.argv[1:]
 
     for filename in filenames:
+        print "converting " + filename
         convert_file(filename)
 
 if __name__ == '__main__':
