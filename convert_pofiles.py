@@ -16,13 +16,20 @@
 
 import re
 import sys
+from babel.messages.pofile import read_po
+from cc.i18n.tools.support import polib_wrapped_write_po
+
 
 def convert_pofile(filename):
     podata = file(filename, 'r').read()
     converted = re.sub(
         "\$\{?(.+?)\}", lambda x: "%(" + x.groups()[0] + ")s", podata)
     file(filename, 'w').write(converted)
+    pofile = read_po(file(filename, 'r'))
+    for msg in pofile:
+        msg.context = None
 
+    polib_wrapped_write_po(filename, pofile)
 
 def main():
     filenames = sys.argv[1:]
